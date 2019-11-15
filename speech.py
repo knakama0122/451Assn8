@@ -14,6 +14,7 @@ class Speech:
 			
 
 	def conv_audio(self, inDir):
+		self.recognized.clear()
 		r = sr.Recognizer()
 
 		for i in range(24):
