@@ -24,6 +24,7 @@ class Speech:
 			print("sentence ", i , "read")
 		
 	def comp_string(self):
+    	self.similarity.clear()
 		for i in range(24):
 			self.similarity.append(distance.levenshtein(self.original[i].split(), self.recognized[i].split()))
 		
