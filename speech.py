@@ -1,6 +1,7 @@
 import speech_recognition as sr
 import distance
 import os
+import matplotlib.pyplot as plot
 
 class Speech:
 	def __init__(self):
@@ -11,7 +12,7 @@ class Speech:
 	def read_original(self, inFile):
 		f = open(inFile, "r")
 		self.original = f.readlines()
-			
+
 
 	def conv_audio(self, inDir):
 		self.recognized.clear()
@@ -23,12 +24,11 @@ class Speech:
 				audio = r.record(source)
 			self.recognized.append(r.recognize_google(audio))
 			print("sentence ", i , "read")
-		
+
 	def comp_string(self):
-    	self.similarity.clear()
+		self.similarity.clear()
 		for i in range(24):
 			self.similarity.append(distance.levenshtein(self.original[i].split(), self.recognized[i].split()))
-		
 
 if __name__ == '__main__':
 	speech = Speech()
@@ -39,11 +39,28 @@ if __name__ == '__main__':
 	print("comparing text and audio")
 	speech.comp_string()
 	print(speech.similarity)
+
+	maleSpanish = speech.similarity
+
 	speech.conv_audio(os.getcwd() + "/Audio/05-English-female/05-English-female")
 	print("comparing text and audio")
 	speech.comp_string()
 	print(speech.similarity)
+
+	femaleEnglish = speech.similarity
+
 	speech.conv_audio(os.getcwd() + "/Audio/13-Bengali-male/13-Bengali-male")
 	print("comparing text and audio")
 	speech.comp_string()
 	print(speech.similarity)
+
+	maleBengali = speech.similarity
+
+	plot.title("Title")
+	plot.ylabel("Data")
+
+	plot.boxplot([maleSpanish, maleBengali], labels=["Spanish", "Bengali"], showcaps=False)
+	plot.show()
+
+	plot.boxplot([maleSpanish, femaleEnglish], labels=["Male", "Female"], showcaps=False)
+	plot.show()
